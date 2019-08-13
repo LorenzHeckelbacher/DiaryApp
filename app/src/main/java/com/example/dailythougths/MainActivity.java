@@ -1,5 +1,6 @@
 package com.example.dailythougths;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
     }
 
+
+
     private void setupBottomNavigationBar() {
         bottomNav = findViewById(R.id.bottom_navigation);
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_mood_stats:
                         selectedFragment = new MoodFragment();
                         break;
+                    case R.id.nav_add:
+                        startAdd();
+                        break;
                 }
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
@@ -46,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+    }
+
+    private void startAdd(){
+        Intent i = new Intent(this, AddActivity.class);
+        startActivity(i);
     }
 
 

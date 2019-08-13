@@ -11,5 +11,12 @@
         android:icon="@drawable/ic_show_chart_black_24dp"
         android:title="Mood Statistics" />
 
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="Add"
+        />
+
+
 
 </menu>
