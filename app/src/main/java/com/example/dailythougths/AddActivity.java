@@ -28,9 +28,9 @@ import java.util.Date;
 public class AddActivity extends AppCompatActivity {
 
 
-    private static final String DATABASE_NAME = "calendarDB";
+    //private static final String DATABASE_NAME = "calendarDB";
     private static final String TAG = "AddActivity";
-    private CalendarEntryDatabase calendarEntryDatabase;
+    //private CalendarEntryDatabase calendarEntryDatabase;
     private TextView displayDate;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private EditText experiencesEditText;
@@ -42,10 +42,9 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        initCalendarEntryDatabase();
         initViews();
-        
     }
+
 
     private void initViews() {
         initDateView();
@@ -86,8 +85,7 @@ public class AddActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterNewIntro();
-                switchToMainActivity();
+                switchToUpdateMainActivity();
             }
         });
     }
@@ -97,21 +95,20 @@ public class AddActivity extends AppCompatActivity {
         moodSelect.check(R.id.okay_radio_button);
     }
 
-    private void initCalendarEntryDatabase(){
+   /* private void initCalendarEntryDatabase(){
         calendarEntryDatabase = Room.databaseBuilder(getApplicationContext(),
                 CalendarEntryDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
-    }
+    }*/
 
     public void checkMoodButton(View v){
         int moodId = moodSelect.getCheckedRadioButtonId();
-
         moodOption = findViewById(moodId);
-
         Toast.makeText(this, "Selected Mood: " + moodOption.getText(), Toast.LENGTH_SHORT).show();
     }
 
+    /*
     private void enterNewIntro(){
         //new thread to put data in the database.
         new Thread(new Runnable() {
@@ -121,11 +118,12 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                insertCalendarEntryIntoDB(date, state, experiences);
+                addCalendarEntryIntoDB(date, state, experiences);
 
             }
         }).start();
-    }
+    } */
+
 
     private MoodState determineMoodState() {
         int moodId = moodSelect.getCheckedRadioButtonId();
@@ -144,7 +142,7 @@ public class AddActivity extends AppCompatActivity {
         return MoodState.Okay;
     }
 
-    private void insertCalendarEntryIntoDB(String date, MoodState state, String experiences){
+   /* private void addCalendarEntryIntoDB(String date, MoodState state, String experiences){
 
 
         CalendarEntry calendarEntry =new CalendarEntry();
@@ -152,11 +150,17 @@ public class AddActivity extends AppCompatActivity {
         calendarEntry.setState(state.getValue());
         calendarEntry.setExperiences(experiences);
         calendarEntryDatabase.daoAccess().insertCalendarEntry(calendarEntry);
-    }
+    } */
 
 
-    private void switchToMainActivity(){
+    private void switchToUpdateMainActivity(){
+        String experiences = experiencesEditText.getText().toString();
+        String date = displayDate.getText().toString();
+        int state = determineMoodState().getValue();
         Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("experiences", experiences);
+        i.putExtra("date", date);
+        i.putExtra("state", state);
         startActivity(i);
     }
 

@@ -3,6 +3,7 @@ package com.example.dailythougths;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.Date;

@@ -1,9 +1,10 @@
 package com.example.dailythougths;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum MoodState {
+public enum MoodState implements Serializable {
     VeryBad(1), Bad(2), Okay(3), Good(4), VeryGood(5)
     ;
 
