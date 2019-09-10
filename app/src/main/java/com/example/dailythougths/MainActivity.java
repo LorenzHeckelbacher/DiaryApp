@@ -2,6 +2,7 @@ package com.example.dailythougths;
 
 import android.app.DatePickerDialog;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,8 +11,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ArrayList<CalendarEntry> entries;
+    private EntryItemAdapter entryItemAdapter;
 
 
     @Override
@@ -36,12 +41,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initCalendarEntryDatabase();
-        handleExtras();
+        //prepareListView();
+        //handleExtras();
         getAllCalendarEntries();
 
 
         setupBottomNavigationBar();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
+    }
+
+    private void prepareListView() {
+        entries = new ArrayList<>();
+        entryItemAdapter = new EntryItemAdapter(MainActivity.this, entries);
+        ListView list = findViewById(R.id.diary_entry_list);
+        list.setAdapter(entryItemAdapter);
     }
 
     // bad code
@@ -56,17 +69,18 @@ public class MainActivity extends AppCompatActivity {
                 CalendarEntry []calendarEntries = calendarEntryDatabase.daoAccess().loadAllEntries();
                 entries = new ArrayList<>(Arrays.asList(calendarEntries));
                 if (!entries.isEmpty()) {
-                    setCalendarViews(entries);
+                    setCalendarViews();
                 }
             }
         });
     }
 
-    private void setCalendarViews(final ArrayList<CalendarEntry> calendarEntries) {
+    private void setCalendarViews() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            Bundle b = new Bundle();
+                //entryItemAdapter.notifyDataSetChanged();
+            //Bundle b = new Bundle();
            // b.putSerializable(calendarEntries);
             }
         });

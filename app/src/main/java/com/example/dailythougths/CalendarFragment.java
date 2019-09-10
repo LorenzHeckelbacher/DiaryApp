@@ -15,17 +15,13 @@ import java.util.ArrayList;
 
 public class CalendarFragment extends Fragment implements DiaryDataChangedListener {
 
-    private ArrayList<CalendarEntry> entries;
-    private EntryItemAdapter adapter;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        entries = mainActivity.getEntries();
-        View v = inflater.inflate(R.layout.fragment_calendar, container, false);
-        ListView list = v.findViewById(R.id.diary_entry_list);
-
+        //MainActivity mainActivity = (MainActivity) getActivity();
+        //setRetainInstance(true);
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 

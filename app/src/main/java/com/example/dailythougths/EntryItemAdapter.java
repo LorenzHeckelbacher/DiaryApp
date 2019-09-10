@@ -14,10 +14,10 @@ import java.util.List;
 
 public class EntryItemAdapter extends ArrayAdapter<CalendarEntry> {
 
-    private ArrayList<CalendarEntry> entryList;
+    private List<CalendarEntry> entryList;
     private Context context;
 
-    public EntryItemAdapter(Context context, ArrayList<CalendarEntry> objects) {
+    public EntryItemAdapter(Context context, List<CalendarEntry> objects) {
         super(context, R.layout.single_entry, objects);
         this.context = context;
         entryList = objects;
