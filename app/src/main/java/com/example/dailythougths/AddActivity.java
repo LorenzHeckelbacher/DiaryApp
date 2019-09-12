@@ -53,8 +53,17 @@ public class AddActivity extends AppCompatActivity {
         initButton();
     }
 
+    private String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return day + "/" + month + "/" + year;
+    }
+
     private void initDateView() {
         displayDate = findViewById(R.id.date);
+        displayDate.setText(getCurrentDate());
 
         displayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,9 +163,13 @@ public class AddActivity extends AppCompatActivity {
 
 
     private void switchToUpdateMainActivity(){
+
         String experiences = experiencesEditText.getText().toString();
+        if (experiences.length() ==0) {experiences = "Heute ist ein schöner Tag";}
         String date = displayDate.getText().toString();
+        if (date.length() ==0) {date = "01.01.2019";}
         int state = determineMoodState().getValue();
+        Log.d(TAG, "AddActivity: " + state + ", " + experiences + ", " + date);
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra("experiences", experiences);
         i.putExtra("date", date);

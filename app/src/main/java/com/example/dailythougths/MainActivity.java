@@ -9,21 +9,24 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener{
 
     BottomNavigationView bottomNav;
 
@@ -33,53 +36,59 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<CalendarEntry> entries;
     private EntryItemAdapter entryItemAdapter;
+    private Bundle addActivityExtras;
+
+    private Fragment selectedFragment;
+    private CalendarEntry selectedEntry;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d(TAG, "Inside of onCreate");
         initCalendarEntryDatabase();
-        //prepareListView();
-        //handleExtras();
+        prepareEntryList();
+        handleExtras();
         getAllCalendarEntries();
-
-
+        Log.d(TAG, "Entries loaded: " + entries.size());
         setupBottomNavigationBar();
+
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
     }
 
-    private void prepareListView() {
-        entries = new ArrayList<>();
-        entryItemAdapter = new EntryItemAdapter(MainActivity.this, entries);
-        ListView list = findViewById(R.id.diary_entry_list);
-        list.setAdapter(entryItemAdapter);
-    }
-
-    // bad code
-    public ArrayList<CalendarEntry> getEntries() {
-        return entries;
+    private void prepareEntryList() {
+        if (entries == null) {
+            entries = new ArrayList<>();
+        }
     }
 
     private void getAllCalendarEntries() {
+        Log.d(TAG, "Inside of getAllCalendarEntries");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                CalendarEntry []calendarEntries = calendarEntryDatabase.daoAccess().loadAllEntries();
-                entries = new ArrayList<>(Arrays.asList(calendarEntries));
+                entries = new ArrayList<>();
+                entries = new ArrayList<>(Arrays.asList(calendarEntryDatabase.daoAccess().loadAllEntries()));
+                for (CalendarEntry e : entries){
+                    Log.d(TAG, ""+ e.getEntryId());
+                }
+                Log.d(TAG,"Lenght of entry list: " + entries.size());
                 if (!entries.isEmpty()) {
                     setCalendarViews();
                 }
             }
-        });
+        }).start();
     }
 
     private void setCalendarViews() {
+        Log.d(TAG, "setCalViews");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //entryItemAdapter.notifyDataSetChanged();
+                setCalendarFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             //Bundle b = new Bundle();
            // b.putSerializable(calendarEntries);
             }
@@ -89,11 +98,10 @@ public class MainActivity extends AppCompatActivity {
     private void handleExtras() {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        Log.d(TAG, "Inside handle Extras");
         if (extras != null){
-            String experiences = extras.getString("experiences");
-            String date = extras.getString("date");
-            int stateValue = extras.getInt("state");
-            enterNewIntro(date, experiences, stateValue);
+            addActivityExtras = extras;
+            enterNewIntro();
         }
     }
 
@@ -106,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setCalendarFragment() {
+        selectedFragment = new CalendarFragment();
+        Bundle args = new Bundle();
+        String key = String.valueOf(R.string.entry_list);
+        args.putSerializable(key, entries);
+        selectedFragment.setArguments(args);
+    }
 
     private void setupBottomNavigationBar() {
         bottomNav = findViewById(R.id.bottom_navigation);
@@ -113,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
+                selectedFragment = null;
 
                 switch (item.getItemId()){
                     case R.id.nav_calendar:
-                        selectedFragment = new CalendarFragment();
+                        setCalendarFragment();
                         break;
                     case R.id.nav_mood_stats:
                         selectedFragment = new MoodFragment();
@@ -126,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
                         startAdd();
                         break;
                 }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                }
 
                 return true;
             }
@@ -147,18 +163,48 @@ public class MainActivity extends AppCompatActivity {
         calendarEntry.setDate(date);
         calendarEntry.setState(stateValue);
         calendarEntry.setExperiences(experiences);
+        Log.d(TAG, "MMOD_STATE: OK???????"+ calendarEntry.getState());
         calendarEntryDatabase.daoAccess().insertCalendarEntry(calendarEntry);
     }
 
 
-    private void enterNewIntro(final String date, final String experiences, final int stateValue){
+    private void enterNewIntro(){
         //new thread to put data in the database.
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String experiences = addActivityExtras.getString("experiences");
+                String date = addActivityExtras.getString("date");
+                int stateValue = addActivityExtras.getInt("state");
+                Log.d(TAG, "Main Activity: " + experiences + ", " + date + ", " + stateValue);
                 insertCalendarEntryIntoDB(date, stateValue, experiences);
 
             }
         }).start();
+    }
+
+    private void deleteSelectedEntry() {
+        //Log.d(TAG,"delete ??? "+ selectedEntry.getEntryId());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                calendarEntryDatabase.daoAccess().deleteCalendarEntry(selectedEntry);
+            }
+        }).start();
+        getAllCalendarEntries();
+    }
+
+    @Override
+    public void onCalendarChanged(int entryId) {
+        Log.d(TAG, "Main: onCalendarChanged - entry ID ? " + entryId);
+    }
+
+    // gets invoked when item in Calendar Fragment is clicked
+    @Override
+    public void onEntrySelected(CalendarEntry entry) {
+        Log.d(TAG, "Main: onCalendarChanged - entry ID ? " + entry.getEntryId());
+        selectedEntry = entry;
+        deleteSelectedEntry();
+
     }
 }

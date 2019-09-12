@@ -60,13 +60,26 @@
 
     </RadioGroup>
 
+  <TextView
+      android:id="@+id/dateHeader"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/select_date"
+      android:textSize="30sp"
+      android:background="@color/colorPrimary"
+      android:textColor="@android:color/white"
+   />
+
+
     <TextView
         android:id="@+id/select_prompt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/select_your_mood"
         android:textSize="30sp"
         android:layout_below="@id/date"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         />
 
     <TextView
@@ -75,6 +88,8 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:hint="Select Date"
+        android:layout_below="@+id/dateHeader"
+        android:textColor="@android:color/darker_gray"
 
         />
 

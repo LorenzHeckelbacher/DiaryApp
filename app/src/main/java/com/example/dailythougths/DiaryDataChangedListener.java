@@ -7,5 +7,7 @@ import java.io.Serializable;
 public interface DiaryDataChangedListener {
 
     //void addCalendarEntry(String date, int stateValue, String experiences);
-    void onCalendarChanged();
+    void onCalendarChanged(int entryId);
+
+    void onEntrySelected(CalendarEntry entry);
 }

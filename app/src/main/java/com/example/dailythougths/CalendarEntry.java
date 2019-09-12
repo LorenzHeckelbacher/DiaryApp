@@ -2,15 +2,20 @@ package com.example.dailythougths;
 
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import androidx.versionedparcelable.ParcelField;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
-public class CalendarEntry {
+public class CalendarEntry implements Serializable {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -18,6 +23,7 @@ public class CalendarEntry {
     private String date;
     private int state;
     private String experiences;
+
 
     @NonNull
     public String getDate() {
@@ -51,4 +57,5 @@ public class CalendarEntry {
     public void setExperiences(String experiences) {
         this.experiences = experiences;
     }
+
 }
