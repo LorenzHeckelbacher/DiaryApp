@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setCalendarFragment();
+                selectedFragment = new CalendarFragment();
+                setFragmentArguments();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             //Bundle b = new Bundle();
            // b.putSerializable(calendarEntries);
@@ -114,10 +115,9 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         }
     }
 
-    private void setCalendarFragment() {
-        selectedFragment = new CalendarFragment();
+    private void setFragmentArguments() {
         Bundle args = new Bundle();
-        String key = String.valueOf(R.string.entry_list);
+        String key = getString(R.string.entry_list);
         args.putSerializable(key, entries);
         selectedFragment.setArguments(args);
     }
@@ -132,10 +132,12 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
                 switch (item.getItemId()){
                     case R.id.nav_calendar:
-                        setCalendarFragment();
+                        selectedFragment = new CalendarFragment();
+                        setFragmentArguments();
                         break;
                     case R.id.nav_mood_stats:
                         selectedFragment = new MoodFragment();
+                        setFragmentArguments();
                         break;
                     case R.id.nav_add:
                         startAdd();
@@ -173,9 +175,9 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String experiences = addActivityExtras.getString("experiences");
-                String date = addActivityExtras.getString("date");
-                int stateValue = addActivityExtras.getInt("state");
+                String experiences = addActivityExtras.getString(getString(R.string.experiences));
+                String date = addActivityExtras.getString(getString(R.string.date));
+                int stateValue = addActivityExtras.getInt(getString(R.string.mood_state));
                 Log.d(TAG, "Main Activity: " + experiences + ", " + date + ", " + stateValue);
                 insertCalendarEntryIntoDB(date, stateValue, experiences);
 

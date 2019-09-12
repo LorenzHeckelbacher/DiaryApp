@@ -165,15 +165,15 @@ public class AddActivity extends AppCompatActivity {
     private void switchToUpdateMainActivity(){
 
         String experiences = experiencesEditText.getText().toString();
-        if (experiences.length() ==0) {experiences = "Heute ist ein schöner Tag";}
+        if (experiences.length() ==0) {experiences = getString(R.string.template_experiences);}
         String date = displayDate.getText().toString();
-        if (date.length() ==0) {date = "01.01.2019";}
+        if (date.length() ==0) {date = getString(R.string.template);}
         int state = determineMoodState().getValue();
         Log.d(TAG, "AddActivity: " + state + ", " + experiences + ", " + date);
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("experiences", experiences);
-        i.putExtra("date", date);
-        i.putExtra("state", state);
+        i.putExtra(getString(R.string.experiences), experiences);
+        i.putExtra(getString(R.string.date), date);
+        i.putExtra(getString(R.string.mood_state), state);
         startActivity(i);
     }
 

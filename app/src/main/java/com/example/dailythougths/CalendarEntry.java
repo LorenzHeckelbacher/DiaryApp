@@ -58,4 +58,21 @@ public class CalendarEntry implements Serializable {
         this.experiences = experiences;
     }
 
+    public static int getDateNumeric(String date) {
+        int [] dateValues = getDateAsArray(date);
+        int year = dateValues[2];
+        int month = dateValues[1];
+        int day = dateValues[0];
+        return year*10000 + (month* 100) + day;
+    }
+
+    public static int [] getDateAsArray(String date) {
+        String[] dateStrings = date.split("/");
+        int [] dateValues = new int[3];
+        for (int i = 0; i < dateStrings.length; i++){
+            dateValues[i] = Integer.parseInt(dateStrings[i]);
+        }
+        return dateValues;
+    }
+
 }
