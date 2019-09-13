@@ -45,7 +45,7 @@ public class AddActivity extends AppCompatActivity {
         initViews();
     }
 
-
+    //views are initialised
     private void initViews() {
         initDateView();
         experiencesEditText = findViewById(R.id.experiences);
@@ -53,6 +53,7 @@ public class AddActivity extends AppCompatActivity {
         initButton();
     }
 
+    //method to calculate the current date
     private String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -61,6 +62,7 @@ public class AddActivity extends AppCompatActivity {
         return day + "/" + month + "/" + year;
     }
 
+    //dateView and its listener are initialised; current date is displayed by default
     private void initDateView() {
         displayDate = findViewById(R.id.date);
         displayDate.setText(getCurrentDate());
@@ -89,6 +91,7 @@ public class AddActivity extends AppCompatActivity {
         };
     }
 
+    //the addButton and its listener are initialised
     private void initButton() {
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +102,7 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    //the RadioButtons used to select the mood are initialised; "okay" is selected by default (set in the xml file)
     private void initMoodSelect() {
         moodSelect = findViewById(R.id.mood_select);
         moodSelect.check(R.id.okay_radio_button);
@@ -111,6 +115,7 @@ public class AddActivity extends AppCompatActivity {
                 .build();
     }*/
 
+   //whenever selecting a RadioButton, a toast message confirming the choice is displayed
     public void checkMoodButton(View v){
         int moodId = moodSelect.getCheckedRadioButtonId();
         moodOption = findViewById(moodId);
@@ -133,7 +138,7 @@ public class AddActivity extends AppCompatActivity {
         }).start();
     } */
 
-
+    //method to determine the moodState based on the radioButton Id; okay is the default option
     private MoodState determineMoodState() {
         int moodId = moodSelect.getCheckedRadioButtonId();
 

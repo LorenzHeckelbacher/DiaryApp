@@ -1,6 +1,8 @@
 package com.example.dailythougths;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener{
@@ -53,9 +56,28 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         getAllCalendarEntries();
         Log.d(TAG, "Entries loaded: " + entries.size());
         setupBottomNavigationBar();
-
+        setupAlarmService();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
+    }
+
+
+
+    private void setupAlarmService() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,2);
+        calendar.set(Calendar.MINUTE,18);
+        calendar.set(Calendar.SECOND,30);
+
+
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.setAction("STRING");
+        int ALARM_ID = 100;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     private void prepareEntryList() {
