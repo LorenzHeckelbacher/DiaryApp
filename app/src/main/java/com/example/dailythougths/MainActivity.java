@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener {
 
     BottomNavigationView bottomNav;
 
@@ -72,16 +72,40 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
     drawer = findViewById(R.id.drawer_Layout);
 
     NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener(){
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_service:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
+                                new ServiceFragment()).commit();
+                        break;
+                    case R.id.nav_help:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
+                                new HelpFragment()).commit();
+                        break;
+                    case R.id.nav_LogOut:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
+                                new LogOutFragment()).commit();
+                        break;
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2, new HelpFragment()).commit();
+        navigationView.setCheckedItem(R.id.nav_help);*/
 }
 
     // burgermenu
 
-
+/*
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -100,6 +124,15 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    } */
+
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void prepareEntryList() {

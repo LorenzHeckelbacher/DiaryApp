@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DiaryDataChangedListener {
 
-    boolean onNavigationItemSelected(@NonNull MenuItem menuItem);
+
 
     //void addCalendarEntry(String date, int stateValue, String experiences);
     void onCalendarChanged(int entryId);
