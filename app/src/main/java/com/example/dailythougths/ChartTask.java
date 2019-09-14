@@ -89,7 +89,6 @@ public class ChartTask extends AsyncTask<List<CalendarEntry>,Void, int[][]> {
     }
 
 
-
     private CalendarEntry getEntryById(int id) {
         for (CalendarEntry e : entries) {
             if (e.getEntryId() == id) {
