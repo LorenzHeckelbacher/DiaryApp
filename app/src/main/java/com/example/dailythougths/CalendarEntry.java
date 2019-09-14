@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import androidx.versionedparcelable.ParcelField;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -58,21 +59,21 @@ public class CalendarEntry implements Serializable {
         this.experiences = experiences;
     }
 
-    public static int getDateNumeric(String date) {
-        int [] dateValues = getDateAsArray(date);
+    public static int getDateNumeric(String date, String separator) {
+        int [] dateValues = getDateAsArray(date, separator);
         int year = dateValues[2];
         int month = dateValues[1];
         int day = dateValues[0];
         return year*10000 + (month* 100) + day;
     }
 
-    public static int [] getDateAsArray(String date) {
-        String[] dateStrings = date.split("/");
+    public static int [] getDateAsArray(String date, String separator) {
+        if (date.isEmpty()){date = new String("10/10/2019");}
+        String[] dateStrings = date.split(separator);
         int [] dateValues = new int[3];
         for (int i = 0; i < dateStrings.length; i++){
             dateValues[i] = Integer.parseInt(dateStrings[i]);
         }
         return dateValues;
     }
-
 }

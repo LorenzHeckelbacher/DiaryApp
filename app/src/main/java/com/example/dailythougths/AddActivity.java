@@ -58,7 +58,7 @@ public class AddActivity extends AppCompatActivity {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        return day + "/" + month + "/" + year;
+        return day + getString(R.string.dateSeparator) + month + getString(R.string.dateSeparator) + year;
     }
 
     private void initDateView() {
@@ -83,7 +83,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month += 1;
-                String date = day + "/" + month + "/" + year;
+                String date = day + getString(R.string.dateSeparator) + month + getString(R.string.dateSeparator) + year;
                 displayDate.setText(date);
             }
         };

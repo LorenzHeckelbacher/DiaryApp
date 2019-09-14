@@ -8,7 +8,16 @@
     <com.github.mikephil.charting.charts.LineChart
     android:id="@+id/chart"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+        />
+
+    <Button
+        android:id="@+id/buttonMoodFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/period_year"
+        />
 
 
 </RelativeLayout>

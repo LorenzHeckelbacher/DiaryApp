@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener{
+public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener {
 
     BottomNavigationView bottomNav;
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
             @Override
             public void run() {
                 selectedFragment = new CalendarFragment();
-                setFragmentArguments();
+                setFragmentArguments(entries);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             //Bundle b = new Bundle();
            // b.putSerializable(calendarEntries);
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         }
     }
 
-    private void setFragmentArguments() {
+    private void setFragmentArguments(ArrayList<CalendarEntry> calendarEntries) {
         Bundle args = new Bundle();
         String key = getString(R.string.entry_list);
-        args.putSerializable(key, entries);
+        args.putSerializable(key, calendarEntries);
         selectedFragment.setArguments(args);
     }
 
@@ -133,11 +133,11 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
                 switch (item.getItemId()){
                     case R.id.nav_calendar:
                         selectedFragment = new CalendarFragment();
-                        setFragmentArguments();
+                        setFragmentArguments(entries);
                         break;
                     case R.id.nav_mood_stats:
                         selectedFragment = new MoodFragment();
-                        setFragmentArguments();
+                        setFragmentArguments(entries);
                         break;
                     case R.id.nav_add:
                         startAdd();
@@ -208,5 +208,20 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         selectedEntry = entry;
         deleteSelectedEntry();
 
+    }
+
+    @Override
+    public void onTimePeriodChanged(ArrayList<CalendarEntry> calendarEntryArrayList) {
+
+    }
+
+    @Override
+    public void onUpdateChartData(List<CalendarEntry> entryOutputs) {
+        selectedFragment = new MoodFragment();
+        ArrayList<CalendarEntry> entriesArrayList = new ArrayList<CalendarEntry>(entryOutputs);
+        setFragmentArguments(entriesArrayList);
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+        }
     }
 }
