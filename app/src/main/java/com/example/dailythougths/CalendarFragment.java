@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CalendarFragment extends Fragment {
+public class
+CalendarFragment extends Fragment {
 
     private static final String TAG = "CalendarFragment";
     private List<CalendarEntry> entries;

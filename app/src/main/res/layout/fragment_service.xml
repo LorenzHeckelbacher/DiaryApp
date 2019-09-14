@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light">
+
+    <TextView
+        android:id="@+id/textService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:text="Terms of Service"
+        android:textSize="35dp" />
+
+    <ImageView
+        android:id="@+id/ServiceImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textService"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_notifications" />
+
+    <TextView
+        android:id="@+id/termsOfService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ServiceImage"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:scrollHorizontally="false"
+        android:text="Welcome to daily thoughts!
+         *daily thoughts* wants to make your everyday life easier for you.
+With our app you can structure your day. Withal it is very important
+to us that you have an accurate record of your feelings. With our
+notifications we would like to increase your mood.
+
+    We don't sell your personal data to advertisers, and we don't share information that identifies you."
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="25dp" />
+
+
+</RelativeLayout>

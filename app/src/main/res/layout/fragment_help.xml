@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Do you need help?"
+        android:textSize="35sp"
+        android:layout_marginTop="150dp"
+        android:id="@+id/textHelp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/helpImage"
+        android:src="@drawable/ic_help"
+        android:layout_below="@id/textHelp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/explanation_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/helpImage"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="25dp"
+        android:text="Our app is pretty simple, so you probably will not
+have too many problems with it. But a short explanation:
+On the left side of our navigationbar you see the calendar. In the middle of
+it you see your mood statistic. So here you can follow your feelings during
+the week. On the right side you can add your mood of the day, by just clicking
+on the button of your choice and selecting the current date. But if you have
+any questions, feel free to ask them on your website."/>
+
+
+</RelativeLayout>

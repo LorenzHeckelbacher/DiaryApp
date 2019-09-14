@@ -14,4 +14,8 @@
     <string name="date">date</string>
     <string name="mood_state">state</string>
     <string name="entry_list">liste</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>
