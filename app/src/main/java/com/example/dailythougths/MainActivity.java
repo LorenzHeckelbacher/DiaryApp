@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         return true;
     }
 
-
     private void prepareEntryList() {
         if (entries == null) {
             entries = new ArrayList<>();
@@ -117,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
             public void run() {
                 entries = new ArrayList<>();
                 entries = new ArrayList<>(Arrays.asList(calendarEntryDatabase.daoAccess().loadAllEntries()));
-                for (CalendarEntry e : entries) {
-                    Log.d(TAG, "" + e.getEntryId());
+                for (CalendarEntry e : entries){
+                    Log.d(TAG, ""+ e.getEntryId());
                 }
-                Log.d(TAG, "Lenght of entry list: " + entries.size());
+                Log.d(TAG,"Lenght of entry list: " + entries.size());
                 if (!entries.isEmpty()) {
                     setCalendarViews();
                 }
@@ -136,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
                 selectedFragment = new CalendarFragment();
                 setFragmentArguments(entries);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                //Bundle b = new Bundle();
-                // b.putSerializable(calendarEntries);
+            //Bundle b = new Bundle();
+           // b.putSerializable(calendarEntries);
             }
         });
     }
@@ -146,13 +144,13 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         Log.d(TAG, "Inside handle Extras");
-        if (extras != null) {
+        if (extras != null){
             addActivityExtras = extras;
             enterNewIntro();
         }
     }
 
-    private void initCalendarEntryDatabase() {
+    private void initCalendarEntryDatabase(){
         if (calendarEntryDatabase == null) {
             calendarEntryDatabase = Room.databaseBuilder(getApplicationContext(),
                     CalendarEntryDatabase.class, DATABASE_NAME)
@@ -176,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 selectedFragment = null;
 
-                switch (item.getItemId()) {
+                switch (item.getItemId()){
                     case R.id.nav_calendar:
                         selectedFragment = new CalendarFragment();
                         setFragmentArguments(entries);
@@ -201,22 +199,22 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
     }
 
-    private void startAdd() {
+    private void startAdd(){
         Intent i = new Intent(this, AddActivity.class);
         startActivity(i);
     }
 
-    private void insertCalendarEntryIntoDB(String date, int stateValue, String experiences) {
-        CalendarEntry calendarEntry = new CalendarEntry();
+    private void insertCalendarEntryIntoDB(String date, int stateValue, String experiences){
+        CalendarEntry calendarEntry =new CalendarEntry();
         calendarEntry.setDate(date);
         calendarEntry.setState(stateValue);
         calendarEntry.setExperiences(experiences);
-        Log.d(TAG, "MMOD_STATE: OK???????" + calendarEntry.getState());
+        Log.d(TAG, "MMOD_STATE: OK???????"+ calendarEntry.getState());
         calendarEntryDatabase.daoAccess().insertCalendarEntry(calendarEntry);
     }
 
 
-    private void enterNewIntro() {
+    private void enterNewIntro(){
         //new thread to put data in the database.
         new Thread(new Runnable() {
             @Override
@@ -270,4 +268,5 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
         }
     }
+
 }
