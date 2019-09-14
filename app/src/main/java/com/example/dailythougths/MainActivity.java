@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements DiaryDataChangedListener, NavigationView.OnNavigationItemSelectedListener{
 
     BottomNavigationView bottomNav;
 
@@ -64,18 +65,20 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
 
-        // burgermenu
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_Layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+    // burgermenu
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+
+    drawer = findViewById(R.id.drawer_Layout);
+
+    NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-    }
+}
 
     // burgermenu
 
@@ -100,14 +103,6 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     private void prepareEntryList() {
         if (entries == null) {
@@ -138,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setCalendarFragment();
+                selectedFragment = new CalendarFragment();
+                setFragmentArguments(entries);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                 //Bundle b = new Bundle();
                 // b.putSerializable(calendarEntries);
@@ -165,11 +161,10 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         }
     }
 
-    private void setCalendarFragment() {
-        selectedFragment = new CalendarFragment();
+    private void setFragmentArguments(ArrayList<CalendarEntry> calendarEntries) {
         Bundle args = new Bundle();
-        String key = String.valueOf(R.string.entry_list);
-        args.putSerializable(key, entries);
+        String key = getString(R.string.entry_list);
+        args.putSerializable(key, calendarEntries);
         selectedFragment.setArguments(args);
     }
 
@@ -183,10 +178,12 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
                 switch (item.getItemId()) {
                     case R.id.nav_calendar:
-                        setCalendarFragment();
+                        selectedFragment = new CalendarFragment();
+                        setFragmentArguments(entries);
                         break;
                     case R.id.nav_mood_stats:
                         selectedFragment = new MoodFragment();
+                        setFragmentArguments(entries);
                         break;
                     case R.id.nav_add:
                         startAdd();
@@ -224,9 +221,9 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String experiences = addActivityExtras.getString("experiences");
-                String date = addActivityExtras.getString("date");
-                int stateValue = addActivityExtras.getInt("state");
+                String experiences = addActivityExtras.getString(getString(R.string.experiences));
+                String date = addActivityExtras.getString(getString(R.string.date));
+                int stateValue = addActivityExtras.getInt(getString(R.string.mood_state));
                 Log.d(TAG, "Main Activity: " + experiences + ", " + date + ", " + stateValue);
                 insertCalendarEntryIntoDB(date, stateValue, experiences);
 
@@ -257,5 +254,20 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         selectedEntry = entry;
         deleteSelectedEntry();
 
+    }
+
+    @Override
+    public void onTimePeriodChanged(ArrayList<CalendarEntry> calendarEntryArrayList) {
+
+    }
+
+    @Override
+    public void onUpdateChartData(List<CalendarEntry> entryOutputs) {
+        selectedFragment = new MoodFragment();
+        ArrayList<CalendarEntry> entriesArrayList = new ArrayList<CalendarEntry>(entryOutputs);
+        setFragmentArguments(entriesArrayList);
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+        }
     }
 }

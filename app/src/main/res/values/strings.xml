@@ -8,8 +8,8 @@
     <string name="good">Good</string>
     <string name="select_your_mood">How do you feel today?</string>
     <string name="select_date">Select date</string>
-    <string name="mood">Stimmung: </string>
-    <string name="template">Datum 1</string>
+    <string name="mood">Mood: </string>
+    <string name="template">01/01/2019</string>
     <string name="experiences">experiences</string>
     <string name="date">date</string>
     <string name="mood_state">state</string>
@@ -18,4 +18,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="template_experiences">Heute ist ein schöner Tag</string>
+    <string name="dateSeparator">/</string>
+    <string name="period_year">year</string>
+    <string name="period_month">month</string>
+    <string name="period_week">week</string>
 </resources>

@@ -36,9 +36,9 @@ public class EntryItemAdapter extends ArrayAdapter<CalendarEntry> {
         TextView mood = v.findViewById(R.id.entry_mood);
         TextView experience = v.findViewById(R.id.experience_text);
         TextView date = v.findViewById(R.id.entry_date);
-
         CalendarEntry e = entryList.get(position);
-        mood.setText(String.valueOf(e.getState()));
+        String moodState = MoodState.valueOf(e.getState()).name();
+        mood.setText(moodState);
         experience.setText(e.getExperiences());
         date.setText(e.getDate());
 

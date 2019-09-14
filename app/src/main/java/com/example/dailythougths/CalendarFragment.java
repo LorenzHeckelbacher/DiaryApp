@@ -30,10 +30,12 @@ CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
         if (getArguments() != null){
-            entries = (List<CalendarEntry>)getArguments().getSerializable(String.valueOf(R.string.entry_list));
+            entries = (List<CalendarEntry>)getArguments().getSerializable(getString(R.string.entry_list));
         }
         else {
-            entries = new ArrayList<>();
+            if (entries == null) {
+                entries = new ArrayList<>();
+            }
         }
         entryItemAdapter = new EntryItemAdapter(getContext(), entries);
         ListView listView = v.findViewById(R.id.diary_entry_list);
