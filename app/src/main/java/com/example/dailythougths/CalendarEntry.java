@@ -12,7 +12,9 @@ import androidx.versionedparcelable.ParcelField;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -75,5 +77,18 @@ public class CalendarEntry implements Serializable {
             dateValues[i] = Integer.parseInt(dateStrings[i]);
         }
         return dateValues;
+    }
+
+    public static boolean occurencesMultipleDates(List<String> dates) {
+        ArrayList<Integer> numericDates = new ArrayList<>();
+        for (String date: dates) {
+            int dateValue = getDateNumeric(date, "/");
+            numericDates.add(dateValue);
+        }
+        Collections.sort(numericDates);
+        if (numericDates.get(0).equals(numericDates.get(numericDates.size()-1))) {
+            return false;
+        }
+        return true;
     }
 }

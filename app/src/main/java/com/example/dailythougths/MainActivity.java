@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,8 +141,10 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
                         setFragmentArguments(entries);
                         break;
                     case R.id.nav_mood_stats:
-                        selectedFragment = new MoodFragment();
-                        setFragmentArguments(entries);
+                        if (checkDateOccurences(entries)) {
+                            selectedFragment = new MoodFragment();
+                            setFragmentArguments(entries);
+                        }
                         break;
                     case R.id.nav_add:
                         startAdd();
@@ -214,6 +217,19 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
     }
 
+    private boolean checkDateOccurences(List<CalendarEntry> currentEntries) {
+        ArrayList<String> dates = new ArrayList<>();
+        for (CalendarEntry e : currentEntries) {
+            dates.add(e.getDate());
+        }
+        if (CalendarEntry.occurencesMultipleDates(dates)){
+            return true;
+        }
+        else {
+            Toast.makeText(MainActivity.this, "You have not enough Dates, please add at least 2 dates", Toast.LENGTH_SHORT).show();
+            return false;}
+    }
+
     @Override
     public void onTimePeriodChanged(int periodType) {
         timePeriodType = periodType;
@@ -221,11 +237,13 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
     @Override
     public void onUpdateChartData(List<CalendarEntry> entryOutputs) {
+        if (checkDateOccurences(entryOutputs)) {
         selectedFragment = new MoodFragment();
         ArrayList<CalendarEntry> entriesArrayList = new ArrayList<CalendarEntry>(entryOutputs);
         setFragmentArguments(entriesArrayList);
         if (selectedFragment != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
         }
     }
 }
