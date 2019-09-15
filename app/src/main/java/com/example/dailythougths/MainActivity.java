@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         }
     }
 
+    //the database is initialised
     private void initCalendarEntryDatabase(){
         if (calendarEntryDatabase == null) {
             calendarEntryDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         selectedFragment.setArguments(args);
     }
 
+    //the NavigationBar is set up and its listener is activated; the three options available are Calendar, Mood Statistics and the add function
     private void setupBottomNavigationBar() {
         bottomNav = findViewById(R.id.bottom_navigation);
 
@@ -162,10 +164,12 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
     }
 
+    //the AddActivity is started using Intents
     private void startAdd(){
         Intent i = new Intent(this, AddActivity.class);
         startActivity(i);
     }
+
 
     private void insertCalendarEntryIntoDB(String date, int stateValue, String experiences){
         CalendarEntry calendarEntry =new CalendarEntry();

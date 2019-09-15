@@ -45,7 +45,7 @@ public class AddActivity extends AppCompatActivity {
         initViews();
     }
 
-
+    //all views contained in the AddActivity are initialised
     private void initViews() {
         initDateView();
         experiencesEditText = findViewById(R.id.experiences);
@@ -53,6 +53,7 @@ public class AddActivity extends AppCompatActivity {
         initButton();
     }
 
+    //using Calendar, the current Date is returned
     private String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -61,6 +62,7 @@ public class AddActivity extends AppCompatActivity {
         return day + getString(R.string.dateSeparator) + month + getString(R.string.dateSeparator) + year;
     }
 
+    //a Date View that displays the current date by default is initialised
     private void initDateView() {
         displayDate = findViewById(R.id.date);
         displayDate.setText(getCurrentDate());
@@ -89,6 +91,8 @@ public class AddActivity extends AppCompatActivity {
         };
     }
 
+    //the addButton is initialised
+    //when clicked, the MainActivity starts
     private void initButton() {
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +103,8 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    //the RadioButtons used to select one's mood are initialised
+    //the "okay" button is selected on default
     private void initMoodSelect() {
         moodSelect = findViewById(R.id.mood_select);
         moodSelect.check(R.id.okay_radio_button);
@@ -133,7 +139,7 @@ public class AddActivity extends AppCompatActivity {
         }).start();
     } */
 
-
+    //method used to determine the MoodState based on the RadioButton selected
     private MoodState determineMoodState() {
         int moodId = moodSelect.getCheckedRadioButtonId();
 
@@ -161,7 +167,7 @@ public class AddActivity extends AppCompatActivity {
         calendarEntryDatabase.daoAccess().insertCalendarEntry(calendarEntry);
     } */
 
-
+    //using Intents with Payload, the data that was entered by the user is sent to the MainActivity, where it is then stored inside the database
     private void switchToUpdateMainActivity(){
 
         String experiences = experiencesEditText.getText().toString();
