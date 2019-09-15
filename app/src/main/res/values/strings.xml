@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Daily Thoughts</string>
     <string name="title_activity_add">AddActivity</string>
     <string name="very_good">Very Good</string>
     <string name="very_bad">Very Bad</string>
