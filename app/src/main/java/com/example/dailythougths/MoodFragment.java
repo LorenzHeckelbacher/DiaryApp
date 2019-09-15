@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -171,12 +172,15 @@ public class MoodFragment extends Fragment implements AsyncResponse {
 
         Log.d(TAG, chartEntries.toString());
         LineDataSet dataSet = new LineDataSet(chartEntries, "Label");
-        LineDataSet dataSet2 = new LineDataSet(indexedEntries, "ByIndex");
+        LineDataSet dataSet2 = new LineDataSet(indexedEntries, "Mood");
         Log.d(TAG, dataSet.toString());
         dataSet.setColor(android.R.color.holo_red_light);
         dataSet.setValueTextColor(android.R.color.black);
         //Log.d(TAG,"Line Data: " + lineData.getDataSetByLabel("Label", true) + ", ");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSet2.setDrawValues(false);
+        dataSet2.setLineWidth(3);
+        dataSet2.setCircleRadius(3);
         dataSets.add(dataSet2); // HIER STAND VORHER KEINE 2
         LineData lineData = new LineData(dataSets);
         YAxis leftAxis = chart.getAxisLeft();
@@ -186,7 +190,15 @@ public class MoodFragment extends Fragment implements AsyncResponse {
         XAxis xAxis = chart.getXAxis();
         xAxis.setGranularity(1);
         xAxis.setValueFormatter(xAxisFormatter);
+        xAxis.setDrawGridLines(false);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setTextSize(12);
+        xAxis.setTextSize(8);
         chart.setData(lineData);
+        chart.setDoubleTapToZoomEnabled(true);
+        chart.setTouchEnabled(true);
+        chart.setScaleYEnabled(false);
+        chart.getDescription().setText("");
         //Log.d(TAG,"Chart: " + chart.toString() + ", ");
         chart.invalidate();
     }
