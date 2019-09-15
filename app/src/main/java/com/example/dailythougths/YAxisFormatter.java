@@ -8,6 +8,7 @@ public class YAxisFormatter extends ValueFormatter {
 
     private static final int [] MOOD = {1, 2, 3, 4, 5};
 
+    // Show mood state instead of int values
     @Override
     public String getFormattedValue(float value) {
         int num = (int) value;

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
+// This class was thought to show the date label for every entry on the y-axis instead of float values
 public class XAxisFormatter extends ValueFormatter {
 
     private int periodType;

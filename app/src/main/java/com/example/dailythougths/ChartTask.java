@@ -37,7 +37,7 @@ public class ChartTask extends AsyncTask<List<CalendarEntry>,Void, int[][]> {
     }
 
 
-
+    // gets dates as an Array for every Calendar Entry and saves them in an 2D-Array
     @Override
     protected int [][] doInBackground(List<CalendarEntry>... lists) {
         List<CalendarEntry> entries = lists[0];
@@ -63,6 +63,8 @@ public class ChartTask extends AsyncTask<List<CalendarEntry>,Void, int[][]> {
     }
 
 
+    // This Method switches the chosen cases for time period, either for all entries, for a year or a month and passes the resulting
+    // entries to the Interface method which is implemented in the main activity
     @Override
     protected void onPostExecute(int[][] ints) {
         super.onPostExecute(ints);
@@ -70,10 +72,6 @@ public class ChartTask extends AsyncTask<List<CalendarEntry>,Void, int[][]> {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        int dayOfYear = cal.get(Calendar.DAY_OF_YEAR);
-        int dayInWeek = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-        int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
         switch (timePeriod) {
             case Y:
                 resultEntries = getYearEntries(getSelectedYear(year), ints);

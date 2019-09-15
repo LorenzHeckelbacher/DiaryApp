@@ -22,7 +22,7 @@ public class EntryItemAdapter extends ArrayAdapter<CalendarEntry> {
         this.context = context;
         entryList = objects;
     }
-
+    // gets the view for every CalenderEntry to show it in the CalendarFragment in a ListView
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
