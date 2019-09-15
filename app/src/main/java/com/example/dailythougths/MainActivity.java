@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
                         if (checkDateOccurences(entries)) {
                             selectedFragment = new MoodFragment();
                             setFragmentArguments(entries);
-                        }
+                            }
                         break;
                     case R.id.nav_add:
                         startAdd();
@@ -218,6 +218,12 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
     }
 
     private boolean checkDateOccurences(List<CalendarEntry> currentEntries) {
+        if (currentEntries.isEmpty()) {
+            Toast.makeText(MainActivity.this, "You have not enough Dates, please add at least 2 dates", Toast.LENGTH_SHORT).show();
+            return false;}
+        for (CalendarEntry e : currentEntries) {
+            Log.d(TAG, e.getDate());
+        }
         ArrayList<String> dates = new ArrayList<>();
         for (CalendarEntry e : currentEntries) {
             dates.add(e.getDate());
@@ -237,12 +243,12 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
 
     @Override
     public void onUpdateChartData(List<CalendarEntry> entryOutputs) {
-        if (checkDateOccurences(entryOutputs)) {
-        selectedFragment = new MoodFragment();
-        ArrayList<CalendarEntry> entriesArrayList = new ArrayList<CalendarEntry>(entryOutputs);
-        setFragmentArguments(entriesArrayList);
-        if (selectedFragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            if (checkDateOccurences(entryOutputs)) {
+                selectedFragment = new MoodFragment();
+                ArrayList<CalendarEntry> entriesArrayList = new ArrayList<CalendarEntry>(entryOutputs);
+                setFragmentArguments(entriesArrayList);
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             }
         }
     }
