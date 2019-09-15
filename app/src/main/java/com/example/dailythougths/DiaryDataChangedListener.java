@@ -13,7 +13,7 @@ public interface DiaryDataChangedListener {
 
     void onEntrySelected(CalendarEntry entry);
 
-    void onTimePeriodChanged(ArrayList<CalendarEntry> calendarEntryArrayList);
+    void onTimePeriodChanged(int periodType);
 
     void onUpdateChartData(List<CalendarEntry> entryOutputs);
 }

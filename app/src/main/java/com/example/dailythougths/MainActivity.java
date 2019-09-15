@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
     private Fragment selectedFragment;
     private CalendarEntry selectedEntry;
 
+    private int timePeriodType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         getAllCalendarEntries();
         Log.d(TAG, "Entries loaded: " + entries.size());
         setupBottomNavigationBar();
+        timePeriodType =0;
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
@@ -119,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
         Bundle args = new Bundle();
         String key = getString(R.string.entry_list);
         args.putSerializable(key, calendarEntries);
+        args.putInt(getString(R.string.period_type), timePeriodType);
         selectedFragment.setArguments(args);
     }
 
@@ -211,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements DiaryDataChangedL
     }
 
     @Override
-    public void onTimePeriodChanged(ArrayList<CalendarEntry> calendarEntryArrayList) {
-
+    public void onTimePeriodChanged(int periodType) {
+        timePeriodType = periodType;
     }
 
     @Override

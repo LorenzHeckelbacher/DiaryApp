@@ -1,13 +1,11 @@
 package com.example.dailythougths;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -31,12 +31,19 @@ public class MoodFragment extends Fragment implements AsyncResponse {
     private static final int Y = 365; //year
     private static final int M = 30; // month
     private static final int W = 7; //week
+    private static final int TOTAL = 0;
+    private static final int MONTH = 1;
+    private static final int YEAR = 2;
+    private static final int MONTH_LONG = 31;
+    private static final int MONTH_SHORT = 31;
     private List<CalendarEntry> entries;
     private DiaryDataChangedListener dataChangedListener;
     private LineChart chart;
 
     private int periodMultiplicator;
-    private Button button;
+    private int periodType;
+    private Button buttonYear;
+    private Button buttonMonth;
 
     @Nullable
     @Override
@@ -45,6 +52,7 @@ public class MoodFragment extends Fragment implements AsyncResponse {
         if (getArguments() != null){
             try {
                 entries = (List<CalendarEntry>) getArguments().getSerializable(getString(R.string.entry_list));
+                periodType = getArguments().getInt(getString(R.string.period_type));
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -53,18 +61,27 @@ public class MoodFragment extends Fragment implements AsyncResponse {
             entries = new ArrayList<>();
         }
         periodMultiplicator =0;
-        button = v.findViewById(R.id.buttonMoodFragment);
+        buttonYear = v.findViewById(R.id.buttonMoodFragment);
+        buttonMonth = v.findViewById(R.id.buttonMonthMood);
         chart = v.findViewById(R.id.chart);
         setListeners();
-        drawCompleteChart();
+        drawChart();
         //prepareDatesForEntries("year");
         return v;
     }
 
     private void setListeners() {
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dataChangedListener.onTimePeriodChanged(YEAR);
+                startChartAsyncTask();
+            }
+        });
+        buttonMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataChangedListener.onTimePeriodChanged(MONTH);
                 startChartAsyncTask();
             }
         });
@@ -74,28 +91,118 @@ public class MoodFragment extends Fragment implements AsyncResponse {
         new ChartTask(Y, periodMultiplicator, entries,  this).execute(entries);
     }
 
+    /*
+    private int getTimeStemp(int periodType, CalendarEntry entry, String date, int[] dateArray) {
+        int reslut;
+        switch (periodType) {
+            case TOTAL:
+                reslut = CalendarEntry.getDateNumeric(date, getString(R.string.dateSeparator));
+                break;
+            case YEAR:
+                for (int i = 1; i <= dateArray[MONTH]; i++ ) {
+                    if (i % 2 )
+                }
+                reslut = dateArray[MONTH];
+                break;
+            case MONTH:
+                reslut = dateArray[TOTAL];
+                break;
+            default:
+                reslut = CalendarEntry.getDateNumeric(date, getString(R.string.dateSeparator));
+                break;
 
-    private void drawCompleteChart() {
+        }
+        return reslut;
+    }
+
+    private int getDayCountInYear(int month, int day) {
+        int result = 0;
+        for (int i = 1; i <= month; i++ ) {
+            if (i < 8) {
+                if (i % 2 == 1) {
+
+                } else {
+
+                }
+            } else {
+                if (i % 2 == 1) {
+
+                } else {
+
+                }
+            }
+
+            }
+    }
+
+    private LineDataSet getLineDataByPeriodType(int periodType, List<CalendarEntry> calendarEntries) {
+        ArrayList<Entry> chartEntries = new ArrayList<Entry>();
+        for (CalendarEntry calendarEntry: calendarEntries) {
+
+        }
+
+    } */
+
+
+    private void drawChart() {
         ArrayList<Entry> chartEntries = new ArrayList<Entry>();
         Log.d(TAG, "insideDrawChart 1");
         for (CalendarEntry calendarEntry: entries) {
             String date = calendarEntry.getDate().isEmpty() ? getString(R.string.template) : calendarEntry.getDate() ;
+            int [] dateArray = CalendarEntry.getDateAsArray(date,getString(R.string.dateSeparator));
+
             Log.d(TAG, "insideDrawChart 2" + ", "+ date + ", " + calendarEntry.getState());
             chartEntries.add(new Entry(CalendarEntry.getDateNumeric(date, getString(R.string.dateSeparator)), calendarEntry.getState()));
         }
         Collections.sort(chartEntries, new EntryXComparator());
+        float [] moodValueArray = new float[chartEntries.size()]; //
+        for (int i = 0; i< chartEntries.size(); i++) {
+            //Log.d(TAG, "Einzelner Mood Entry ???" + chartEntries.get(i).getY());
+            moodValueArray[i] = chartEntries.get(i).getY();
+        }
+        ArrayList<Entry> indexedEntries = new ArrayList<>();
+        for (int i = 0; i< moodValueArray.length; i++) {
+            indexedEntries.add(new Entry(i, moodValueArray[i]));
+        }
+        //float daysDifference = getDaysDifference(chartEntries.get(0).getX(), chartEntries.get(chartEntries.size()-1).getX());
+        XAxisFormatter xAxisFormatter = new XAxisFormatter(periodType, (int)(chartEntries.get(0).getX()), (int)(chartEntries.get(chartEntries.size()-1).getX()));
+
+
+
         Log.d(TAG, chartEntries.toString());
         LineDataSet dataSet = new LineDataSet(chartEntries, "Label");
+        LineDataSet dataSet2 = new LineDataSet(indexedEntries, "ByIndex");
         Log.d(TAG, dataSet.toString());
         dataSet.setColor(android.R.color.holo_red_light);
         dataSet.setValueTextColor(android.R.color.black);
         //Log.d(TAG,"Line Data: " + lineData.getDataSetByLabel("Label", true) + ", ");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(dataSet);
+        dataSets.add(dataSet2); // HIER STAND VORHER KEINE 2
         LineData lineData = new LineData(dataSets);
+        YAxis leftAxis = chart.getAxisLeft();
+        chart.getAxisRight().setDrawLabels(false);
+        leftAxis.setValueFormatter(new YAxisFormatter());
+        leftAxis.setGranularity(1);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setGranularity(1);
+        xAxis.setValueFormatter(xAxisFormatter);
         chart.setData(lineData);
         //Log.d(TAG,"Chart: " + chart.toString() + ", ");
         chart.invalidate();
+    }
+
+    private float getDaysDifference(float min, float max) {
+        switch (periodType) {
+            case TOTAL:
+                break;
+            case YEAR:
+                return (float)Y;
+            case MONTH:
+                return (float) M;
+            default:
+                break;
+        }
+        return (max -min);
     }
 
     private void drawPartOfChart(ArrayList<CalendarEntry> calendarEntries) {

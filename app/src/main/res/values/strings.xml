@@ -19,4 +19,5 @@
     <string name="period_year">year</string>
     <string name="period_month">month</string>
     <string name="period_week">week</string>
+    <string name="period_type">type</string>
 </resources>
