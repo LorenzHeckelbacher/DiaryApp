@@ -110,12 +110,6 @@ public class AddActivity extends AppCompatActivity {
         moodSelect.check(R.id.okay_radio_button);
     }
 
-   /* private void initCalendarEntryDatabase(){
-        calendarEntryDatabase = Room.databaseBuilder(getApplicationContext(),
-                CalendarEntryDatabase.class, DATABASE_NAME)
-                .fallbackToDestructiveMigration()
-                .build();
-    }*/
 
     public void checkMoodButton(View v){
         int moodId = moodSelect.getCheckedRadioButtonId();
@@ -123,21 +117,6 @@ public class AddActivity extends AppCompatActivity {
         Toast.makeText(this, "Selected Mood: " + moodOption.getText(), Toast.LENGTH_SHORT).show();
     }
 
-    /*
-    private void enterNewIntro(){
-        //new thread to put data in the database.
-        new Thread(new Runnable() {
-            String experiences = experiencesEditText.getText().toString();
-            String date = displayDate.getText().toString();
-            MoodState state = determineMoodState();
-
-            @Override
-            public void run() {
-                addCalendarEntryIntoDB(date, state, experiences);
-
-            }
-        }).start();
-    } */
 
     //method used to determine the MoodState based on the RadioButton selected
     private MoodState determineMoodState() {
@@ -157,15 +136,6 @@ public class AddActivity extends AppCompatActivity {
         return MoodState.Okay;
     }
 
-   /* private void addCalendarEntryIntoDB(String date, MoodState state, String experiences){
-
-
-        CalendarEntry calendarEntry =new CalendarEntry();
-        calendarEntry.setDate(date);
-        calendarEntry.setState(state.getValue());
-        calendarEntry.setExperiences(experiences);
-        calendarEntryDatabase.daoAccess().insertCalendarEntry(calendarEntry);
-    } */
 
     //using Intents with Payload, the data that was entered by the user is sent to the MainActivity, where it is then stored inside the database
     private void switchToUpdateMainActivity(){

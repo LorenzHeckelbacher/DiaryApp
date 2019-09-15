@@ -92,59 +92,6 @@ public class MoodFragment extends Fragment implements AsyncResponse {
         new ChartTask(Y, periodMultiplicator, entries,  this).execute(entries);
     }
 
-    /*
-    private int getTimeStemp(int periodType, CalendarEntry entry, String date, int[] dateArray) {
-        int reslut;
-        switch (periodType) {
-            case TOTAL:
-                reslut = CalendarEntry.getDateNumeric(date, getString(R.string.dateSeparator));
-                break;
-            case YEAR:
-                for (int i = 1; i <= dateArray[MONTH]; i++ ) {
-                    if (i % 2 )
-                }
-                reslut = dateArray[MONTH];
-                break;
-            case MONTH:
-                reslut = dateArray[TOTAL];
-                break;
-            default:
-                reslut = CalendarEntry.getDateNumeric(date, getString(R.string.dateSeparator));
-                break;
-
-        }
-        return reslut;
-    }
-
-    private int getDayCountInYear(int month, int day) {
-        int result = 0;
-        for (int i = 1; i <= month; i++ ) {
-            if (i < 8) {
-                if (i % 2 == 1) {
-
-                } else {
-
-                }
-            } else {
-                if (i % 2 == 1) {
-
-                } else {
-
-                }
-            }
-
-            }
-    }
-
-    private LineDataSet getLineDataByPeriodType(int periodType, List<CalendarEntry> calendarEntries) {
-        ArrayList<Entry> chartEntries = new ArrayList<Entry>();
-        for (CalendarEntry calendarEntry: calendarEntries) {
-
-        }
-
-    } */
-
-
     private void drawChart() {
         ArrayList<Entry> chartEntries = new ArrayList<Entry>();
         Log.d(TAG, "insideDrawChart 1");

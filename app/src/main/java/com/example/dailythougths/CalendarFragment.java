@@ -46,12 +46,6 @@ public class CalendarFragment extends Fragment {
                 dataChangedListener.onEntrySelected(clickedEntry);
             }
         });
-        //MainActivity mainActivity = (MainActivity)getActivity();
-        //entries = mainActivity.getEntries();
-        //entryItemAdapter = new EntryItemAdapter((MainActivity)getActivity(), entries);
-
-        //MainActivity mainActivity = (MainActivity) getActivity();
-        //setRetainInstance(true);
         return v;
     }
 
